@@ -1,40 +1,66 @@
 
+const myRock = document.querySelectorAll('.text');
 
-for (let i = 3; i > 0; i--){
-    let player = prompt("Please input one of the following: \n '1' for Rock \n '2' for Paper \n '3' for Scissors");
-    if (player == 1) {
-        player = "Rock"
-    }
-    else if (player == 2) {
-        player = "Paper"
-    }
-    else if (player == 3) {
-        player = "Scissors"
-    }
-    playRound(player, getComputerChoice())
-}
+myRock.forEach(clicked => {
+    clicked.addEventListener('click', function(e){
+        playRound(e.target.id, getComputerChoice());
+    })
+})
 
 
-
+const resultText = document.createElement('div')
+const player = document.querySelector('#Player')
+const computer = document.querySelector('#Computer')
+let plcount = 0;
+let playerScore = 0;
+let computerScore = 0;
 function playRound(playerChoice, computerChoice){
     // Compare player choice to computer choice 
     // Determine Winner
     // Return a string telling who won
+
+    plcount = plcount + 1;
+    console.log(plcount)
+    const container = document.querySelector('.container')
+    resultText.style.marginTop = '10px';
+
+
+
+
     var result = winCondition(playerChoice, computerChoice)
     console.log("Computer: " + computerChoice);
     console.log("You: " + playerChoice);
     if (result === "Win"){
-        console.log("You Win! " + playerChoice + " beats " + computerChoice);
+        resultText.textContent = "You Win! " + playerChoice + " beats " + computerChoice;
+        playerScore = playerScore + 1;
+        player.textContent = "Player: " + playerScore;
     }
     else if (result === "Lose"){
-        console.log("You Lose! " + computerChoice + " beats " + playerChoice)
+        resultText.textContent = "You Lose! " + computerChoice + " beats " + playerChoice;
+        computerScore = computerScore + 1;
+        computer.textContent = "Computer: " + computerScore;
     }
     else{
-        console.log("Its a tie!")
+        resultText.textContent = "It's a tie!";
+    }
+    container.appendChild(resultText);
+    if (playerScore >= 5){
+        resultText.textContent = "Player Wins!"
+        computerScore = 0
+
+    }
+    else if (computerScore >= 5){
+        resultText.textContent = "Computer Wins"
+        playerScore = 0
+        
     }
 
-    
 }
+
+
+
+
+
 
 function winCondition(playerChoice, computerChoice){
         if (computerChoice === playerChoice){
